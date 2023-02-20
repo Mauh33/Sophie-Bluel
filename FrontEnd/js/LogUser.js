@@ -1,20 +1,10 @@
+import { navigator } from "./navigator.js";
+
+
 const form = document.getElementById('form');
 const mail = document.getElementById('email').value;
 const password = document.getElementById('password').value;
 
-
-const hasValidateToken = (data) => data?.userId ? true : false;
-
-const navigator = (data) => {
-  const windowLocation = window.location;
-  const canNavigate = hasValidateToken(data);
-  if (canNavigate) {
-    localStorage.setItem("token", data.token)
-    windowLocation.assign("http://127.0.0.1:5500/FrontEnd/index.html")
-  } else {
-    window.alert("Veuillez vérifier vos identifiants")
-  }
-}
 
 form.addEventListener('submit', (e) => {
   e.preventDefault(); // empêche le formulaire de se soumettre normalement
@@ -34,13 +24,3 @@ form.addEventListener('submit', (e) => {
 
 
 
-
-/* then(response => response.json(), {
-  windowLocation.assign("http://127.0.0.1:5500/FrontEnd/index.html"),
-}
-) */
-
-/*
-
-
-} */
