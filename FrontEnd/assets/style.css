@@ -283,13 +283,17 @@ footer nav ul {
 	color: #3D3D3D;
 }
 
+.submit-log {
+	text-align: center;
+}
+
 .submit-log input{
 	height: 36px;
 	border: none;
+	margin-top: 0;
 }
 
 .submit-log a {
-	padding-left: 20px;
 	font-weight: 600;
 }
 
