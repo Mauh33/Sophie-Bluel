@@ -333,7 +333,7 @@ footer nav ul {
 	align-self: center;
 }
 
-/* modal */
+/* modal 1 et 2 */
 
 .modal-btn {
 	border: none;
@@ -341,7 +341,7 @@ footer nav ul {
 	font-family: 'Work Sans';
 }
 
-.modal-container {
+.modal-container, .modal-container-add {
 	position: fixed;
   top: 0;
   left: 0;
@@ -358,6 +358,10 @@ footer nav ul {
 	visibility: visible;
 }
 
+.modal-container-add.active {
+	visibility: visible;
+}
+
 .overlay {
 	opacity: 0;
 	position: absolute;
@@ -367,12 +371,17 @@ footer nav ul {
 	transition: opacity 0.4s 0.2s ease-in-out;
 }
 
-.modal-container.active .overlay {
+.modal-container.active .overlay, .modal-container-add.active .overlay {
 	opacity: 1;
   transition: opacity 0.4s ease-out;
 }
 
-.modal {
+/* .modal-container-add.active .overlay2 {
+	opacity: 1;
+  transition: opacity 0.4s ease-out;
+} */
+
+.modal, .modal-add-primary {
 	opacity: 0;
   max-width: 60%;
   width: 600px;
@@ -384,16 +393,25 @@ footer nav ul {
 	left: 45%;
   background-color: white;
   border-radius: 3%;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-content: space-evenly;
 	transform: translate(-40%, calc(-10% - 20px));
 	transition: opacity 0.4s ease-out,
 	transform 0.4s ease-out;
+	display: flex;
+	flex-wrap: wrap;
 }
 
-.modal-container.active .modal {
+.modal-flex {
+	justify-content: center;
+	align-content: space-evenly;
+}
+
+.modal-flex-add {
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-content: center;
+}
+
+.modal-container.active .modal, .modal-container-add.active .modal-add-primary {
 	opacity: 1;
   transform: translate(-40%, -10%);
   transition: opacity 0.4s 0.2s ease-out,
@@ -409,31 +427,41 @@ footer nav ul {
 }
 
 .close-modal {
-	padding: 8px 10px;
-	border: none;
 	border-radius: 5px;
 	font-size: 18px;
-	position: absolute;
 	top: 10px;
 	right: 10px;
-	cursor: pointer;
 	color:black;
 	background-color: transparent;
 }
 
-.gallery-edit {
+.close-modal, .return-btn {
+	border: none;
+	cursor: pointer;
+	position: absolute;
+	top: 10px;
+	padding: 8px 10px;
+}
+
+.gallery-edit, .form-add-project {
   width: 75% ;
   height: 65%;
 	min-width: 300px;
-  margin: auto;
-	padding-left: 10%;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: flex-start;
 	align-content: flex-start;
 	border-bottom: 2px solid #B3B3B3;
 }
 
+.gallery-edit {
+	justify-content: flex-start;
+	margin: auto;
+	padding-left: 10%;
+}
+
+.form-add-project {
+	justify-content: center;
+}
 
 .gallery-edit img {
 	width: 18%;
@@ -441,6 +469,25 @@ footer nav ul {
 	margin-bottom: 30px;
 	padding: 0 6px;
 }
+
+.file-add_block {
+	position: absolute;
+	max-width: 420px;
+	width: 70%;
+	min-width: 200px;
+	height: 169px;
+	background-color: #E8F1F7;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+  align-items: center;
+}
+
+.add-picture-img {
+	width: 60px;
+	height: 46px;
+}
+
 
 .btn-edit {
 	width: 237px;
@@ -461,6 +508,24 @@ footer nav ul {
 }
 
 
+
+.return-btn, .return-btn-img {
+	background-color: white;
+}
+
+.return-btn {
+	left: 10px;
+}
+
+.btn-validation {
+	width: 237px;
+	height: 36px;
+	border-radius: 60px;
+	border: none;
+	align-self: center;
+	background-color: #A7A7A7;;
+	color: white;
+}
 
 /*
 			Second page

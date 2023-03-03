@@ -1,7 +1,6 @@
 import { hasValidateToken } from "./hasValidateToken.js";
 
 
-
 const navigator = (data) => {
   const windowLocation = window.location;
   const canNavigate = hasValidateToken(data);

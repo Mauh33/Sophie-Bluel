@@ -29,7 +29,7 @@ async function projectsGenerator(){
 
   const portfolio = document.getElementById("portfolio");
   const myGallery = document.querySelector(".gallery");
-/*   const titlePortfolio = document.querySelector("#portfolio h2");
+ /*  const titlePortfolio = document.querySelector("#portfolio h2");
   portfolio.prepend(titlePortfolio); */
   const filtersElement = document.createElement("div");
   filtersElement.classList.add("filters_bloc");

@@ -114,7 +114,7 @@
       </div>
       <div
         id="modal-wrapper"
-        class="modal"
+        class="modal  modal-flex"
         role="dialog"
         aria-hidden="true"
         aria-labelledby="modalTitle"
@@ -127,12 +127,39 @@
           </button>
           <div class="gallery-edit">
           </div>
-          <button aria-label="btn-edit" class="btn-edit">
+          <button aria-label="btn-edit" class="btn-edit   modal-triggerAdd  ">
             Ajouter une photo
           </button>
           <p class="delete-picture">supprimer la galerie</p>
           <div>
           </div>
+    </div>
+
+    <div class="modal-container-add">
+      <div class="overlay">
+        <div class="modal-add-primary  modal-flex-add">
+          <div class="button_escape-block">
+            <button class="return-btn  modal-triggerAdd"><img class="return-btn-img" src="./assets/icons/Arrow_Back.svg" alt="retour en arrière"></button>
+            <h3 class="modal-title">Ajout photo</h3>
+            <button class="close-modal  modal-triggerAdd">X</button>
+          </div>
+          <form class="form-add-project" action="">
+            <div class="file-add_block">
+              <img class="add-picture-img" src="./assets/icons/pictures-addpictures-project.svg" alt="">
+              <label for="picture-add">+ Ajouter photo</label>
+              <input type="file" name="pictureAdd" id="picture-add">
+            </div>
+            <input type="text" name="" id="title-add">
+            <label for="category-select" id="category-select"></label>
+            <select name="category" id="category-select">
+              <option id="objects-category" value="Objets"></option>
+              <option id="Appartments-category" value="Appartements"></option>
+              <option id="Hotels-restaurants-category" value="Hotels & restaurants"></option>
+            </select>
+          </form>
+          <button class="btn-validation">Valider</button>
+        </div>
+      </div>
     </div>
     <script type="module" src="./js/index.js"></script>
     <script type="module" src="./js/modalOpening.js"></script>

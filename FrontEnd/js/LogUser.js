@@ -2,8 +2,6 @@ import { navigator } from "./navigator.js";
 import {loadedContent} from "./modalOpening.js"
 
 const form = document.getElementById('form');
-const mail = document.getElementById('email').value;
-const password = document.getElementById('password').value;
 
 
 form.addEventListener('submit', (e) => {
