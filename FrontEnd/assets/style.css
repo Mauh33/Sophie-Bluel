@@ -193,13 +193,12 @@ margin: auto;
 #contact input {
 	height: 50px;
 	font-size: 1.2em;
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
 #contact label {
 	margin: 2em 0 1em 0;
 }
-#contact textarea {
+#contact textarea, #contact input, .file-add_block-bot input, .file-add_block-bot select {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
@@ -376,21 +375,19 @@ footer nav ul {
   transition: opacity 0.4s ease-out;
 }
 
-/* .modal-container-add.active .overlay2 {
-	opacity: 1;
-  transition: opacity 0.4s ease-out;
-} */
+.modal {
+	height: 65%;
+}
 
 .modal, .modal-add-primary {
 	opacity: 0;
-  max-width: 60%;
-  width: 600px;
+  max-width: 700px;
+  width: 65%;
 	min-width: 300px;
-  height: 700px;
-  max-height: 70%;
+  max-height: 1000px;
   position: absolute;
-  top: 40%;
-	left: 45%;
+  top: calc(40% - 150px);
+	left: 47%;
   background-color: white;
   border-radius: 3%;
 	transform: translate(-40%, calc(-10% - 20px));
@@ -398,6 +395,10 @@ footer nav ul {
 	transform 0.4s ease-out;
 	display: flex;
 	flex-wrap: wrap;
+}
+
+.modal-add-primary {
+	height: 60%;
 }
 
 .modal-flex {
@@ -442,6 +443,13 @@ footer nav ul {
 	top: 10px;
 	padding: 8px 10px;
 }
+.return-btn, .return-btn-img {
+	background-color: white;
+}
+
+.return-btn {
+	left: 10px;
+}
 
 .gallery-edit, .form-add-project {
   width: 75% ;
@@ -456,38 +464,137 @@ footer nav ul {
 .gallery-edit {
 	justify-content: flex-start;
 	margin: auto;
-	padding-left: 10%;
+	padding-left: calc(10% - 20px);
+}
+
+.divModalImg {
+	width: 18%;
+	max-width: 80px;
+	height: 24%;
+	max-height: 100px;
+	position: relative;
+	margin: 20px 6px;
+}
+
+.divModalImg img {
+	object-fit: contain;
+	width: 100%;
+	height: 100%;
+}
+
+.divTrashImg {
+	position: relative;
+	top: -93%;
+	right: -68%;
+	overflow: hidden;
+	width: 17px;
+	height: 17px;
+}
+
+.trashBtn {
+	width: 17px;
+	height: 17px;
+  border: none;
+  text-align: center;
+  display: block;
+  font-size: 16px;
+  background-color: black;
+  position: relative;
+  overflow: hidden;
+}
+
+.trashImg {
+	position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .form-add-project {
 	justify-content: center;
+	margin-bottom: 80px;
+	height: 60%;
+	margin-bottom: 150px;
 }
 
-.gallery-edit img {
-	width: 18%;
-	height: 24%;
-	margin-bottom: 30px;
-	padding: 0 6px;
-}
-
-.file-add_block {
-	position: absolute;
-	max-width: 420px;
-	width: 70%;
-	min-width: 200px;
+.file-add_block-global {
 	height: 169px;
 	background-color: #E8F1F7;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-around;
   align-items: center;
+}
+
+
+.file-add_block-global, .file-add_block-bot {
+	width: 500px;
+	min-width: 250px;
 }
 
 .add-picture-img {
 	width: 60px;
 	height: 46px;
+	position: relative;
+	top: 15px;
 }
 
+.add-file_block-btn {
+	display: inline-block;
+	position: relative;
+	overflow:hidden
+}
+
+.add-file_block-btn input {
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: 0;
+	width: 170px;
+	height: 40px;
+}
+
+.add-file_block-btn p {
+	font-size: smaller;
+	text-align: center;
+}
+
+.picture-add-btn {
+	width: 170px;
+  height: 40px;
+  border-radius: 50px;
+  background: #CBD6DC;
+  text-align: center;
+	border: none;
+	color: #306685;
+	font-weight: 600;
+	margin-bottom: 10px;
+}
+
+.file-add_block-bot {
+	min-height: 260px;
+	max-height: 300px;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+}
+
+.file-add_block-bot label {
+	font-weight: 600;
+	color: #3D3D3D;
+	margin-top: 35px;
+	padding-bottom: 12px;
+}
+
+.file-add_block-bot input, .file-add_block-bot select {
+	height: 52px;
+	padding-left: 12px;
+	font-size: 0.8rem;
+	color: #444444;
+	margin-bottom: 12px;
+}
 
 .btn-edit {
 	width: 237px;
@@ -507,17 +614,15 @@ footer nav ul {
 	bottom: 10px;
 }
 
-
-
-.return-btn, .return-btn-img {
-	background-color: white;
+.newImg {
+	position: relative;
+	z-index: 1;
+	height: 100%;
+	width: 35%;
+	top: 0;
 }
 
-.return-btn {
-	left: 10px;
-}
-
-.btn-validation {
+#btn-validation  {
 	width: 237px;
 	height: 36px;
 	border-radius: 60px;
@@ -525,6 +630,8 @@ footer nav ul {
 	align-self: center;
 	background-color: #A7A7A7;;
 	color: white;
+	position: absolute;
+	bottom: 44px;
 }
 
 /*

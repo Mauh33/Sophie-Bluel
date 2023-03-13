@@ -12,13 +12,10 @@
       rel="stylesheet"
     />
     <meta name="description" content="" />
-    <script type="module" src="../FrontEnd/js/index.js"></script>
     <link rel="stylesheet" href="./assets/style.css" />
   </head>
-
-
-
   <body>
+
     <div class="edit-bann" id="edit-bann">
       <div class="edit-flex  edit-flex-bann">
         <img class="edit-icon-white" src="./assets/icons/edit-icon-white.svg" alt="">
@@ -109,59 +106,72 @@
       </nav>
     </footer>
 
-    <div class="modal-container">
-      <div class="overlay modal-trigger">
-      </div>
-      <div
+    <div>
+      <div class="modal-container">
+        <div class="overlay modal-trigger"></div>
+        <div
         id="modal-wrapper"
         class="modal  modal-flex"
         role="dialog"
         aria-hidden="true"
         aria-labelledby="modalTitle"
         aria-describedby="dialogDesc">
-          <h3 id="modal-title" class="modal-title">
-            Galerie Photo
-          </h3>
-          <button class="close-modal  modal-trigger">
-            X
-          </button>
-          <div class="gallery-edit">
-          </div>
-          <button aria-label="btn-edit" class="btn-edit   modal-triggerAdd  ">
-            Ajouter une photo
-          </button>
-          <p class="delete-picture">supprimer la galerie</p>
-          <div>
-          </div>
-    </div>
-
-    <div class="modal-container-add">
-      <div class="overlay">
-        <div class="modal-add-primary  modal-flex-add">
-          <div class="button_escape-block">
-            <button class="return-btn  modal-triggerAdd"><img class="return-btn-img" src="./assets/icons/Arrow_Back.svg" alt="retour en arrière"></button>
-            <h3 class="modal-title">Ajout photo</h3>
-            <button class="close-modal  modal-triggerAdd">X</button>
-          </div>
-          <form class="form-add-project" action="">
-            <div class="file-add_block">
-              <img class="add-picture-img" src="./assets/icons/pictures-addpictures-project.svg" alt="">
-              <label for="picture-add">+ Ajouter photo</label>
-              <input type="file" name="pictureAdd" id="picture-add">
-            </div>
-            <input type="text" name="" id="title-add">
-            <label for="category-select" id="category-select"></label>
-            <select name="category" id="category-select">
-              <option id="objects-category" value="Objets"></option>
-              <option id="Appartments-category" value="Appartements"></option>
-              <option id="Hotels-restaurants-category" value="Hotels & restaurants"></option>
-            </select>
-          </form>
-          <button class="btn-validation">Valider</button>
-        </div>
+        <h3 id="modal-title" class="modal-title">
+          Galerie Photo
+        </h3>
+        <button class="close-modal  modal-trigger">
+          X
+        </button>
+        <div class="gallery-edit"></div>
+        <button aria-label="btn-edit" class="btn-edit   modal-triggerAdd  ">
+          Ajouter une photo
+        </button>
+        <p class="delete-picture">supprimer la galerie</p>
       </div>
     </div>
+
+
+    <div class="modal-container-add">
+      <div class="overlay"></div>
+
+      <div class="modal-add-primary  modal-flex-add">
+        <div class="button_escape-block">
+          <button class="return-btn  modal-triggerAdd">
+            <img class="return-btn-img" src="./assets/icons/Arrow_Back.svg" alt="retour en arrière"></button>
+            <h3 class="modal-title">Ajout photo</h3>
+            <button class="close-modal  modal-triggerAdd">X</button>
+        </div>
+        <form class="form-add-project" action="#" method="post"
+          id="formModal"
+          >
+          <div class="file-add_block-global">
+            <img class="add-picture-img" src="./assets/icons/pictures-addpictures-project.svg" alt="">
+            <div class="add-file_block-btn">
+              <button class= "picture-add-btn" for="">+ Ajouter photo</button>
+              <input type="file" name="image" id="image" accept=".png, .jpg" size="4000000" required>
+              <p>jpg, png : 4mo max</p>
+            </div>
+          </div>
+          <div class="file-add_block-bot">
+            <label for="title">Titre</label>
+            <input type="text" id="title" name= "title" required>
+            <label for="category" id="category-select">Catégorie</label>
+            <select name="category" id="category" required>
+              <option value="" selected disabled></option>
+              <option id="1" value="1">Objets</option>
+              <option id="2" value="2">Appartements</option>
+              <option id="3" value="3">Hotels et restaurants</option>
+            </select>
+          </div>
+          <input type="submit" class="btn-validation"
+          id="btn-validation"
+          value="Valider"></input>
+        </form>
+      </div>
+    </div>
+  </div>
     <script type="module" src="./js/index.js"></script>
-    <script type="module" src="./js/modalOpening.js"></script>
+    <script type="module" src="./js/bann.js"></script>
+    <!-- <script type="module" src="./js/modalOpening.js"></script> -->
   </body>
 </html>
