@@ -22,6 +22,12 @@ async function getProjects() {
 // 2) fonction de génération des projets triés
 async function projectsGenerator() {
 
+  const myGallery = document.querySelector(".gallery");
+  myGallery.innerHTML = " ";
+  if (document.querySelector(".filters_bloc")) {
+    document.querySelector(".filters_bloc").remove();
+  }
+
   //On attend la réponse, le resolve de la promesse de fetch.
   const projects = await getProjects();
   // Object.values permet de renvoyer un tableau
@@ -29,7 +35,6 @@ async function projectsGenerator() {
   const labels = Object.values(CATEGORIES);
 
   const portfolio = document.querySelector("#portfolio");
-  const myGallery = document.querySelector(".gallery");
   const filtersElement = document.createElement("div");
   filtersElement.classList.add("filters_bloc");
   portfolio.appendChild(filtersElement);
@@ -99,8 +104,8 @@ const modalTriggersAdd = document.querySelectorAll(".modal-triggerAdd");
 
 const inputFile = document.getElementById('image');
 const imageContainer = document.querySelector('.add-picture-img');
-
-const Bearer = window.sessionStorage.getItem("Bearer")
+const trashBtn = document.querySelector("trashBtn");
+const Bearer = window.sessionStorage.getItem("Bearer");
 
 
 
@@ -116,79 +121,96 @@ function toggleModal() {
   modalContainer.classList.toggle("active");
   // création des img de la modale
   async function displayModalImg() {
-    const projectsImg = await getProjects();
+    let projectsImg = await getProjects();
     for (const project of projectsImg) {
       // si la var n'inclut pas les URL des img de l'api
       if (!imgDisplayed.includes(project.imageUrl)) {
         // élements crées
         const divElementProject = document.createElement("div");
         const imageElement = document.createElement("img");
-        const divTrashElement = document.createElement("div");
-        let trashElement = document.createElement("img");
-        let trashBtn = document.createElement("button");
-        // attributs des images
+        const trashElement = document.createElement("img");
+        const trashBtn = document.createElement("button");
+        // attributs des images et btn
         imageElement.src = project.imageUrl;
         imageElement.crossOrigin = "anonymous";
         trashElement.src = "./assets/icons/trash-icon.svg";
+        trashBtn.setAttribute("type", "button");
+        trashBtn.setAttribute("data-id", project.id)
         // classes ajoutées
         divElementProject.classList.add("divModalImg");
-        divTrashElement.classList.add("divTrashImg");
-        trashBtn.classList.add("trashBtn");
+        imageElement.classList.add("imageElement");
         trashElement.classList.add("trashImg");
+        trashBtn.classList.add("trashBtn");
         // lien entre les éléments et le dom
         galleryEdit.appendChild(divElementProject);
         divElementProject.appendChild(imageElement);
-        divElementProject.appendChild(divTrashElement);
-        divTrashElement.appendChild(trashBtn);
-        trashBtn.appendChild(trashElement);
-
+        divElementProject.appendChild(trashBtn);
+        divElementProject.appendChild(trashElement);
         imgDisplayed.push(imageElement.src);
         console.log(imageElement);
+
+
+        trashBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          const id = trashBtn.getAttribute("data-id");
+          fetch(`http://localhost:5678/api/works/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-type": "application/json",
+              "Authorization": `Bearer ${Bearer}`
+            }
+          })
+            .then((response) => {
+              if (response.ok) {
+                console.log("Le projet a bien été supprimé");
+              }
+            })
+            .then((result) => {
+              trashBtn.parentNode.remove();
+              console.log(result);
+              projectsGenerator();
+            })
+        })
       }
     }
   }
   return displayModalImg();
 }
 
-/* function trashNumbering(divTrashElement) {
-  let id = document.querySelectorAll(".divTrashImg").length + 1;
-  const divNumbered = divTrashElement.querySelectorAll("divTrashImg");
-  divNumbered.forEach((div) => {
-    div.id = "0" + id;
-    id++;
-  });
-} */
+/* trashElement = document.querySelector(".trashImg");
 
-/* function incrementDivIds() {
-  let id = 1;
-  const divModalImg = document.querySelector("divModalImg");
-  const divNumbered = divModalImg.querySelectorAll("div");
-  for (let i = 0; i < divNumbered.length; i++) {
-    divNumbered += id + 1;
-    divNumbered[i].setAttribute("id", id);
-    id++
-  }
-} */
+trashElement.addEventListener("click", function (event) {
+  event.stopPropagation();
+}) */
 
 
-/* function incrementDivTrashImgIds(trashBtn) {
-  // Récupérer tous les éléments avec la classe "divTrashImg"
-  const trashBtnVar = trashBtn;
 
-  // Parcourir chaque élément et incrémenter son attribut "id"
-  trashBtnVar.forEach((trashBtnVar) => {
-    // Récupérer l'ancienne valeur de l'attribut "id"
-    const oldId = trashBtnVar.setAttribute("id", " ");
-    const Id = trashBtnVar.getAttribute('oldId');
 
-    // Incrémenter l'ancienne valeur de 1
-    const newId = parseInt(id) + 1;
 
-    // Mettre à jour l'attribut "id" avec la nouvelle valeur
-    trashBtnVar.setAttribute('id', newId.toString(1));
-  });
-} */
 
+
+
+/*
+trashBtn.addEventListener("click", deleteProject)
+
+
+function deleteProject(e) {
+  e.preventDefault();
+  const id = trashBtn.getAttribute("data-id");
+  fetch(`http://localhost:5678/api/works/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+      "Authorization": `Bearer ${Bearer}`
+    }
+  })
+    .then((response) => {
+      const JSONresponse = response.json();
+      console.log(JSONresponse)
+    })
+    .then(result => alert(result, "Votre projet a été supprimé"))
+}
+ */
 
 // 5) fonction d'affichage de la deuxième modale
 function displaySecondModal() {
@@ -249,6 +271,7 @@ formModal.addEventListener("submit", async function (e) {
     })
     .then((success) => {
       console.log(success)
+
     })
     .catch(err => {
       if (err !== null) {
@@ -262,34 +285,49 @@ formModal.addEventListener("submit", async function (e) {
 
 
 
-// 8) Suppression de la modale
+    // 8) Suppression de la modale
 
-/*
 
-trashBtn.addEventListener("click", async function (e) {
+    // trashBtn.addEventListener("click", deleteProject);
+
+
+
+/* async function deleteProject(e) {
+
   e.preventDefault();
+  const projects = await getProjects();
+  console.log(projects)
+  // const idsData = await project.id;
+  // for (const id of idsData) {
+  //   console.log(id);
+  // }
 
+  for (let i = 0; i < projects.length; i++) {
+    const trashBtn = document.getElementsByClassName("trashBtn");
 
-  const project = await getProjects();
-  const id = await project.id;
-  deleteProject(id)
-})
+    trashBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      console.log(projects[i]);
+      const id = projects[i].id;
 
-async function deleteProject(id) {
-  const deleteWork = await fetch(`http://localhost:5678/api/works/` + id, {
-    method: "DELETE",
-    headers: {
-      "Content-type": "application/json",
-      "Authorization": `Bearer ${Bearer}`
-    }
-  })
-    .then((response) => {
-      const JSONresponse = response.json();
-      console.log(JSONresponse)
+      fetch("http://localhost:5678/api/works/" + id, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": `Bearer ${Bearer}`
+        }
+      })
+        .then((response) => {
+          const JSONresponse = response.json();
+          console.log(JSONresponse)
+        })
+        .then(result => alert(result, "Votre projet a été supprimé"))
     })
-    .then(result => alert(result, "Votre projet a été supprimé"))
-}
- */
+  }
+} */
+
+
+
 
 /*
 
