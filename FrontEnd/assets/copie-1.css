@@ -29,7 +29,6 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-  box-sizing: border-box;
 	line-height: 1;
 }
 ol, ul {
@@ -100,16 +99,14 @@ nav li {
 li:hover {
 	color: #B1663C;
 }
-
 #introduction {
 	display: flex;
 	align-items: center;
 }
-
 #introduction figure {
 	flex: 1
 }
-.introduction img {
+#introduction img {
 	display: block;
 	margin: auto;
 	width: 80%;
@@ -125,12 +122,9 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-
 #portfolio h2 {
-	display: block;
-	width: 200px;
 	text-align: center;
-	margin-left: 12%;
+	margin-bottom: 1em;
 }
 
 .gallery {
@@ -222,246 +216,6 @@ footer nav ul {
 }
 
 
-
-/*
-      First page - modale version
-*/
-
-
-.edit-flex {
-	display: flex;
-	align-items: center;
-	height: 30px;
-}
-
-/* Bannière */
-
-.edit-bann {
-	width: 100%;
-	height: 55px;
-	background-color: black;
-	position: relative;
-	top: 0;
-	margin: auto;
-}
-
-#edit-bann {
-	display: none;
-}
-
-.edit-bann .edit-flex-bann {
-	height: 100%;
-	justify-content: center;
-	align-items: center;
-	color: white;
-}
-
-.edit-flex-bann > button {
-	background-color: white;
-	width: 200px;
-	height: 35px;
-	border-radius: 20px;
-	font-weight: 600;
-}
-
-.edit-icon-white, .edit-bann > button {
-	padding: 0 10px;
-}
-
-.edit-bann p {
-	padding-left: 0;
-	padding-right: 20px;
-}
-
-.edit-bann.active {
-	visibility: visible;
-}
-
-.edit-icon-white {
-	width: 20px;
-	height: 20px;
-}
-
-.edit-icon {
-	width: 15px;
-	height: 15px;
-}
-
-/* figure */
-
-.edit-flex-figure .edit-icon {
-	align-self: center;
-	margin-left: 0;
-  margin-right: 0;
-	padding-left: 27%;
-	width: 30px;
-}
-
-.edit-flex-figure {
-	margin-top: 5px;
-	width: 150px;
-}
-
-/* introduction */
-
-.edit-flex-introduction {
-	height: 30px;
-	justify-content: flex-start;
-	align-items: baseline;
-	width: 100px;
-}
-
-.edit-flex-introduction .edit-icon {
-	padding-left: 0;
-}
-
-.edit-flex-introduction a {
-	align-self: center;
-  display: block;
-}
-
-.portfolio-title-block {
-	display: flex;
-	margin-top: 100px;
-	margin-bottom: 50px;
-	justify-content: center;
-}
-
-.portfolio-title-block > img {
-	padding-left: 25px;
-	padding-right: 5px;
-	align-self: center;
-}
-
-/* modal */
-
-.modal-btn {
-	border: none;
-	background-color: white;
-	font-family: 'Work Sans';
-}
-
-.modal-container {
-	position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	visibility: hidden;
-	transition: visibility 0.4s;
-}
-
-.modal-container.active {
-	visibility: visible;
-}
-
-.overlay {
-	opacity: 0;
-	position: absolute;
-	width: 100%;
-  height: 100%;
-	background:rgba(0, 0, 0, 0.6);
-	transition: opacity 0.4s 0.2s ease-in-out;
-}
-
-.modal-container.active .overlay {
-	opacity: 1;
-  transition: opacity 0.4s ease-out;
-}
-
-.modal {
-	opacity: 0;
-  max-width: 60%;
-  width: 600px;
-	min-width: 300px;
-  height: 700px;
-  max-height: 70%;
-  position: absolute;
-  top: 40%;
-	left: 45%;
-  background-color: white;
-  border-radius: 3%;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-content: space-evenly;
-	transform: translate(-40%, calc(-10% - 20px));
-	transition: opacity 0.4s ease-out,
-	transform 0.4s ease-out;
-}
-
-.modal-container.active .modal {
-	opacity: 1;
-  transform: translate(-40%, -10%);
-  transition: opacity 0.4s 0.2s ease-out,
-	transform 0.4s 0.2s ease-out;
-}
-
-.modal-title {
-	font-size: 28px;
-  padding-top: 15px;
-  text-align: center;
-	display: block;
-	flex-basis: 100%;
-}
-
-.close-modal {
-	padding: 8px 10px;
-	border: none;
-	border-radius: 5px;
-	font-size: 18px;
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	cursor: pointer;
-	color:black;
-	background-color: transparent;
-}
-
-.gallery-edit {
-  width: 75% ;
-  height: 65%;
-	min-width: 300px;
-  margin: auto;
-	padding-left: 10%;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: flex-start;
-	align-content: flex-start;
-	border-bottom: 2px solid #B3B3B3;
-}
-
-
-.gallery-edit img {
-	width: 18%;
-	height: 24%;
-	margin-bottom: 30px;
-	padding: 0 6px;
-}
-
-.btn-edit {
-	width: 237px;
-  height: 36px;
-  border-radius: 60px;
-  background-color: #1D6154;
-  color: white;
-  border: none;
-  justify-self: center;
-}
-
-.modal p {
-	color: #D65353;
-  text-align: center;
-	flex-basis: 100% ;
-	position: relative;
-	bottom: 10px;
-}
-
-
-
 /*
 			Second page
 */
@@ -512,6 +266,7 @@ footer nav ul {
 	height: auto;
 	margin-bottom: 35px;
 }
+
 
 .input-log input {
 	width: 379px;

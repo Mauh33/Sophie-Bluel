@@ -1,6 +1,6 @@
 # Backend API - Sophie Bluel
 
-Ce repo contient le code backend de l'architecte Sophie Bluel. 
+Ce repo contient le code backend de l'architecte Sophie Bluel.
 
 ## Lancement du backend
 
@@ -13,8 +13,15 @@ Compte de test pour Sophie Bluel
 ```
 email: sophie.bluel@test.tld
 
-password: S0phie 
+password: S0phie
+
+key JWT pour work :
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY3NzQ4NjQxNiwiZXhwIjoxNjc3NTcyODE2fQ.CSfbKDzDeI_HDFUT8Uu-jfcqK7hwYKhrgT-JMys8y0I
+
+
 ```
+
 Lien pour voir la
 [documentation Swagger](http://localhost:5678/api-docs/)
 
