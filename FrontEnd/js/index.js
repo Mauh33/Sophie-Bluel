@@ -1,5 +1,8 @@
 
+// Element div, regroupant le titre et les éléments du mode édition cliquable;
+const portfolioTitleBlock = document.createElement("div");
 
+const Bearer = window.sessionStorage.getItem("Bearer");
 
 // Boutons à comparer aux catégories sur l'API
 const CATEGORIES = {
@@ -27,18 +30,35 @@ async function projectsGenerator() {
   if (document.querySelector(".filters_bloc")) {
     document.querySelector(".filters_bloc").remove();
   }
+  if (document.querySelector("portfolio-title-block")) {
+    document.querySelector("portfolio-title-block").remove()
+  }
 
   //On attend la réponse, le resolve de la promesse de fetch.
   const projects = await getProjects();
-  // Object.values permet de renvoyer un tableau
-  // contenant les valeurs de l'objet passé en param
+  /* Object.values permet de renvoyer un tableau
+  contenant les valeurs de l'objet passé en param */
   const labels = Object.values(CATEGORIES);
 
+  // Eléments à styliser, à lier au dom
   const portfolio = document.querySelector("#portfolio");
-  const filtersElement = document.createElement("div");
+  const title = document.querySelector(".project-title");
+  const edit = document.getElementById("hidden-edit-three");
+  let filtersElement = document.createElement("div");
+  portfolioTitleBlock.classList.add("portfolio-title-block");
+  portfolioTitleBlock.style.margin = "100px 0 45px 0"
   filtersElement.classList.add("filters_bloc");
+  portfolioTitleBlock.appendChild(title);
+  portfolioTitleBlock.appendChild(edit);
+  portfolio.appendChild(portfolioTitleBlock);
   portfolio.appendChild(filtersElement);
+  portfolio.insertBefore(portfolioTitleBlock, myGallery)
   portfolio.insertBefore(filtersElement, myGallery);
+
+  // condition d'apparition des filtres
+  if (sessionStorage.getItem("Bearer") !== null) {
+    filtersElement.style.display = "none";
+  }
 
   // Envoi des projets sur le dom afin de vérifier les catégories présentes
   displayProjects(projects)
@@ -56,7 +76,7 @@ async function projectsGenerator() {
         /* on appelle une méthode filter, et une fonction callback qui va comparer le nom sur l'api et celui de l'objet créee */
         filteredProjects = projects.filter(projet => projet.category.name === category);
       }
-      // Dans tous les cas, on rafraichit la galerie on effaçant ce qui était avant
+      // Dans tous les cas, on rafraichit la galerie en effaçant ce qui était avant
       myGallery.innerHTML = "";
       // Et on inclut la génération visuelle au filtre choisi.
       displayProjects(filteredProjects);
@@ -64,7 +84,8 @@ async function projectsGenerator() {
   };
 
   /*
-  Pour toutes les catégories, on crée l'ensemble des éléments, on lui assigne sa catégorie
+  Pour toutes les catégories, on crée l'ensemble des éléments,
+  on lui assigne sa catégorie
   */
   for (const label of labels) {
     const btnFilter = document.createElement("button");
@@ -101,20 +122,22 @@ const modalTriggers = document.querySelectorAll(".modal-trigger");
 const galleryEdit = document.querySelector(".gallery-edit");
 const modalContainerAdd = document.querySelector(".modal-container-add")
 const modalTriggersAdd = document.querySelectorAll(".modal-triggerAdd");
+const logOut = document.querySelector(".logOut");
 
 const inputFile = document.getElementById('image');
 const imageContainer = document.querySelector('.add-picture-img');
 const trashBtn = document.querySelector("trashBtn");
-const Bearer = window.sessionStorage.getItem("Bearer");
-
-
+const returnBtn = document.querySelector(".return-btn");
+const btnValidation = document.getElementById("btn-validation");
 
 // 3) fonction d'ouverture des modales au clic de la souris
 modalTriggers.forEach(trigger => trigger.addEventListener("click", toggleModal));
 modalTriggersAdd.forEach(test => test.addEventListener("click", displaySecondModal));
 
 
+
 // 4) fonction d'affichage de la première modale et des img des projets en miniature
+// + suppression des projets au clic sur le bouton corbeille
 let imgDisplayed = [];
 
 function toggleModal() {
@@ -123,7 +146,8 @@ function toggleModal() {
   async function displayModalImg() {
     let projectsImg = await getProjects();
     for (const project of projectsImg) {
-      // si la var n'inclut pas les URL des img de l'api
+      // si la var n'inclut pas les URL des img de l'api on l'ajoute
+      // évite les duplicats
       if (!imgDisplayed.includes(project.imageUrl)) {
         // élements crées
         const divElementProject = document.createElement("div");
@@ -150,6 +174,7 @@ function toggleModal() {
         console.log(imageElement);
 
 
+        // 5) fonction de suppression d'un projet
         trashBtn.addEventListener("click", function (e) {
           e.preventDefault();
           const id = trashBtn.getAttribute("data-id");
@@ -173,65 +198,38 @@ function toggleModal() {
         })
       }
     }
+    // élimination de l'image de positionnement
+    if (document.querySelector(".moveImg")) {
+      document.querySelector(".moveImg").remove()
+    } else {
+      const moveElement = document.createElement("img");
+      moveElement.src = "./assets/icons/Move.svg";
+      moveElement.classList.add("moveImg");
+      galleryEdit.firstElementChild.appendChild(moveElement);
+    }
   }
   return displayModalImg();
 }
 
-/* trashElement = document.querySelector(".trashImg");
 
-trashElement.addEventListener("click", function (event) {
-  event.stopPropagation();
-}) */
-
-
-
-
-
-
-
-
-/*
-trashBtn.addEventListener("click", deleteProject)
-
-
-function deleteProject(e) {
-  e.preventDefault();
-  const id = trashBtn.getAttribute("data-id");
-  fetch(`http://localhost:5678/api/works/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-type": "application/json",
-      "Authorization": `Bearer ${Bearer}`
-    }
-  })
-    .then((response) => {
-      const JSONresponse = response.json();
-      console.log(JSONresponse)
-    })
-    .then(result => alert(result, "Votre projet a été supprimé"))
-}
- */
-
-// 5) fonction d'affichage de la deuxième modale
-function displaySecondModal() {
-  modalContainer.classList.toggle("active");
+// 6) fonction d'affichage de la deuxième modale
+function displaySecondModal(e) {
+  returnBtn.addEventListener("click", () => { modalContainer.classList.toggle("active") })
+  modalContainer.classList.remove("active");
   modalContainerAdd.classList.toggle("active");
   if (inputFile.files[0]) {
     imageContainer.src = "./assets/icons/pictures-addpictures-project.svg";
     imageContainer.setAttribute("class", "add-picture-img");
   }
-  // modalContainerAdd.style.display = "block"
 }
 
 
-// 6) Affichage de l'image nouvellement chargée
+// 7) Affichage de l'image nouvellement chargée dans la seconde modale
 function displaySelectedImage() {
-
   const reader = new FileReader();
   imageContainer.classList.add('newImg');
   reader.addEventListener('load', function () {
     imageContainer.src = reader.result;
-    const btnValidation = document.querySelector(".btn-validation");
     btnValidation.style.backgroundColor = "#1D6154";
   });
   if (inputFile.files[0]) {
@@ -239,21 +237,20 @@ function displaySelectedImage() {
   }
 }
 
-const imageInput = document.getElementById('image');
-imageInput.addEventListener('change', displaySelectedImage);
+inputFile.addEventListener('change', displaySelectedImage);
 
 
 
-// 7) fonction d'envoi des nouveaux projets
-const formModal = document.getElementById("formModal");
 
-formModal.addEventListener("submit", async function (e) {
+// 8) fonction d'envoi des nouveaux projets
 
+const formModal = document.querySelector("#formModal");
+
+async function addNewProject(e) {
   e.preventDefault();
 
-  const formData = new FormData(formModal)
-  console.log(...formData)
-  // const Bearer = window.sessionStorage.getItem("Bearer")
+  const formData = new FormData(formModal);
+  console.log(...formData);
 
   const response = await fetch(`http://localhost:5678/api/works`, {
     method: "POST",
@@ -264,81 +261,36 @@ formModal.addEventListener("submit", async function (e) {
       const data = response.json();
       if (response.ok) {
         console.log(data);
-        return data
+        projectsGenerator();
       } else {
         throw { "name": "ResponseNotOkError", "message": data["message"], "status": response.status };
       }
     })
     .then((success) => {
-      console.log(success)
-
+      modalContainer.classList.remove("active");
+      modalContainerAdd.classList.remove("active");
+      document.querySelector(".add-picture-img").src = "./assets/icons/pictures-addpictures-project.svg";
+      document.querySelector(".add-picture-img").classList.remove("newImg");
+      formModal.querySelector("#title").innerText = "";
+      formModal.querySelector("#category")[0];
+      formModal.reset();
+      console.log(success);
     })
-    .catch(err => {
+    .catch((err) => {
       if (err !== null) {
-        Error(err.message, err.status); // custom function
-      } else {
-        TinyText.Create(err.message); // Showing error
+        Error(err.message, err.status);
       }
-    })
-});
+    });
+};
+
+formModal.addEventListener("submit", addNewProject)
 
 
 
 
-    // 8) Suppression de la modale
-
-
-    // trashBtn.addEventListener("click", deleteProject);
-
-
-
-/* async function deleteProject(e) {
-
-  e.preventDefault();
-  const projects = await getProjects();
-  console.log(projects)
-  // const idsData = await project.id;
-  // for (const id of idsData) {
-  //   console.log(id);
-  // }
-
-  for (let i = 0; i < projects.length; i++) {
-    const trashBtn = document.getElementsByClassName("trashBtn");
-
-    trashBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      console.log(projects[i]);
-      const id = projects[i].id;
-
-      fetch("http://localhost:5678/api/works/" + id, {
-        method: "DELETE",
-        headers: {
-          "Content-type": "application/json",
-          "Authorization": `Bearer ${Bearer}`
-        }
-      })
-        .then((response) => {
-          const JSONresponse = response.json();
-          console.log(JSONresponse)
-        })
-        .then(result => alert(result, "Votre projet a été supprimé"))
-    })
-  }
-} */
-
-
-
-
-/*
-
-function deleteProject(id) {
-
-  const deleteWork = await fetch(`http://localhost:5678/api/works/{id}`, {
-    method: "DELETE",
-    headers: { "Authorization": `Bearer ${Bearer}` },
-    body:
-  })
-}
-
-trashElement.addEventListener("click", )
- */
+// 9) fonction de nettoyage du sessionStorage
+logOut.addEventListener("click", function (e) {
+  e.preventDefault;
+  sessionStorage.clear();
+  console.log(sessionStorage.key);
+})

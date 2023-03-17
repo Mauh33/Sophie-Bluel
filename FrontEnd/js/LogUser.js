@@ -26,7 +26,7 @@ form.addEventListener('submit', (e) => {
       // vérification du token, et démarrage de la session
       navigator(data),
         // affichage de la bannière éditeur
-        loadedContent(data)
+        loadedContent(data);
     })
     .catch((error) => {
       console.log("My error :", error.message);

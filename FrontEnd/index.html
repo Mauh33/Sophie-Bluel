@@ -28,10 +28,10 @@
       <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
         <ul>
-          <li>projets</li>
-          <li>contact</li>
+          <li class="navBar-link">projets</li>
+          <li class="navBar-link">contact</li>
           <li>
-            <a href="./pages/login.html">login</a>
+            <a href="./pages/login.html" class="navBar-link logOut">login</a>
           </li>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
@@ -42,16 +42,16 @@
       <section id="introduction" class="introduction">
         <figure>
           <img src="./assets/images/sophie-bluel.png" alt="" />
-          <div class="edit-flex  edit-flex-figure  edit-visibility">
-              <img class="edit-icon" src="./assets/icons/edit-icon.svg" alt="">
-            <a class="">modifier</a>
+          <div class="edit-flex  edit-flex-figure  edit-visibility" id="hidden-edit-one">
+              <img class="edit-icon " src="./assets/icons/edit-icon.svg" alt="">
+            <a>modifier</a>
           </div>
         </figure>
 
         <article class="article-introduction">
-          <div class="edit-flex  edit-flex-introduction  edit-visibility">
-            <img class="edit-icon" src="./assets/icons/edit-icon.svg" alt="">
-            <a class="">modifier</a>
+          <div class="edit-flex  edit-flex-introduction  edit-visibility" id="hidden-edit-two">
+            <img class="edit-icon  " src="./assets/icons/edit-icon.svg" alt="">
+            <a>modifier</a>
           </div>
           <h2>Designer d'espace</h2>
           <p>
@@ -73,13 +73,15 @@
       </section>
 
       <section id="portfolio">
-        <div class="portfolio-title-block">
-          <h2>Mes Projets</h2>
-          <img class="edit-icon  edit-visibility" src="./assets/icons/edit-icon.svg" alt="">
-          <button class="modal-btn  modal-trigger  ">
-            modifier
-          </button>
-        </div>
+
+          <h2 class="project-title">Mes Projets</h2>
+          <div class="edit-flex  edit-visibility" id="hidden-edit-three">
+            <img class="edit-icon" src="./assets/icons/edit-icon.svg" alt="">
+            <button class="modal-btn  modal-trigger">
+              modifier
+            </button>
+          </div>
+
         <div class="gallery"></div>
       </section>
 
@@ -132,7 +134,7 @@
 
 
     <div class="modal-container-add">
-      <div class="overlay"></div>
+      <div class="overlay  modal-triggerAdd"></div>
 
       <div class="modal-add-primary  modal-flex-add">
         <div class="button_escape-block">
