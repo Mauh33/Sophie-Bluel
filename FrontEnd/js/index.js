@@ -1,68 +1,91 @@
-//
 
+// Element div, regroupant le titre et les éléments du mode édition cliquable;
+const portfolioTitleBlock = document.createElement("div");
+
+const Bearer = window.sessionStorage.getItem("Bearer");
+
+// Boutons à comparer aux catégories sur l'API
 const CATEGORIES = {
-  NONE : "Tous",
-  OBJECTS : "Objets",
-  APPARTMENTS : "Appartements",
-  HOTELS : "Hotels & restaurants"
+  NONE: "Tous",
+  OBJECTS: "Objets",
+  APPARTMENTS: "Appartements",
+  HOTELS: "Hotels & restaurants"
 };
 
 
-// fonction de récupération des données sur le dom
+// 1) fonction de récupération des travaux sur le dom
 async function getProjects() {
   const response = await fetch('http://localhost:5678/api/works')
-  .catch((error) => console.error(error));
-  const projects = await response.json()
-  return projects;
+    .catch((error) => console.error(error));
+  const projects = await response.json();
+  return projects
 }
 
 
+// 2) fonction de génération des projets triés
+async function projectsGenerator() {
 
-// fonction de génération des projets triés
-async function projectsGenerator(){
+  const myGallery = document.querySelector(".gallery");
+  myGallery.innerHTML = " ";
+  if (document.querySelector(".filters_bloc")) {
+    document.querySelector(".filters_bloc").remove();
+  }
+  if (document.querySelector("portfolio-title-block")) {
+    document.querySelector("portfolio-title-block").remove()
+  }
 
   //On attend la réponse, le resolve de la promesse de fetch.
   const projects = await getProjects();
-  // Object.values permet de renvoyer un tableau
-  // contenant les valeurs de l'objet passé en param
+  /* Object.values permet de renvoyer un tableau
+  contenant les valeurs de l'objet passé en param */
   const labels = Object.values(CATEGORIES);
 
-  const portfolio = document.getElementById("portfolio");
-  const myGallery = document.querySelector(".gallery");
-/*   const titlePortfolio = document.querySelector("#portfolio h2");
-  portfolio.prepend(titlePortfolio); */
-  const filtersElement = document.createElement("div");
+  // Eléments à styliser, à lier au dom
+  const portfolio = document.querySelector("#portfolio");
+  const title = document.querySelector(".project-title");
+  const edit = document.getElementById("hidden-edit-three");
+  let filtersElement = document.createElement("div");
+  portfolioTitleBlock.classList.add("portfolio-title-block");
+  portfolioTitleBlock.style.margin = "100px 0 45px 0"
   filtersElement.classList.add("filters_bloc");
+  portfolioTitleBlock.appendChild(title);
+  portfolioTitleBlock.appendChild(edit);
+  portfolio.appendChild(portfolioTitleBlock);
   portfolio.appendChild(filtersElement);
+  portfolio.insertBefore(portfolioTitleBlock, myGallery)
   portfolio.insertBefore(filtersElement, myGallery);
 
+  // condition d'apparition des filtres
+  if (sessionStorage.getItem("Bearer") !== null) {
+    filtersElement.style.display = "none";
+  }
 
+  // Envoi des projets sur le dom afin de vérifier les catégories présentes
   displayProjects(projects)
 
 
-
-/* fonction qui prend par défaut aucune catégorie.
-Sinon on filtre dans un tableau, avec .filter()  */
-const getFilteredProjects = (category) => {
-  return () => {
-    // let est utilisé pour être réassigné afin qu'on puisse changer la catégorie
-    let filteredProjects;
-    if (category === CATEGORIES.NONE) {
-      filteredProjects = projects;
-    } else {
+  /* fonction qui prend par défaut aucune catégorie.
+  Sinon on filtre dans un tableau, avec .filter()  */
+  const getFilteredProjects = (category) => {
+    return () => {
+      // let est utilisé pour être réassigné afin qu'on puisse changer la catégorie
+      let filteredProjects;
+      if (category === CATEGORIES.NONE) {
+        filteredProjects = projects;
+      } else {
         /* on appelle une méthode filter, et une fonction callback qui va comparer le nom sur l'api et celui de l'objet créee */
         filteredProjects = projects.filter(projet => projet.category.name === category);
       }
-      // Dans tous les cas, on rafraichit la galerie on effaçant ce qui était avant
+      // Dans tous les cas, on rafraichit la galerie en effaçant ce qui était avant
       myGallery.innerHTML = "";
-      // Et on inclut la génération visuelle à au filtre choisi.
+      // Et on inclut la génération visuelle au filtre choisi.
       displayProjects(filteredProjects);
     };
   };
 
   /*
-  Pour toutes les catégories, on crée l'ensemble des éléments, on lui assigne
-  sa catégorie
+  Pour toutes les catégories, on crée l'ensemble des éléments,
+  on lui assigne sa catégorie
   */
   for (const label of labels) {
     const btnFilter = document.createElement("button");
@@ -91,4 +114,183 @@ const getFilteredProjects = (category) => {
 projectsGenerator();
 
 
-export {getProjects}
+
+
+// éléments à mettre en avant en mode édition
+const modalContainer = document.querySelector(".modal-container");
+const modalTriggers = document.querySelectorAll(".modal-trigger");
+const galleryEdit = document.querySelector(".gallery-edit");
+const modalContainerAdd = document.querySelector(".modal-container-add")
+const modalTriggersAdd = document.querySelectorAll(".modal-triggerAdd");
+const logOut = document.querySelector(".logOut");
+
+const inputFile = document.getElementById('image');
+const imageContainer = document.querySelector('.add-picture-img');
+const trashBtn = document.querySelector("trashBtn");
+const returnBtn = document.querySelector(".return-btn");
+const btnValidation = document.getElementById("btn-validation");
+
+// 3) fonction d'ouverture des modales au clic de la souris
+modalTriggers.forEach(trigger => trigger.addEventListener("click", toggleModal));
+modalTriggersAdd.forEach(test => test.addEventListener("click", displaySecondModal));
+
+
+
+// 4) fonction d'affichage de la première modale et des img des projets en miniature
+// + suppression des projets au clic sur le bouton corbeille
+let imgDisplayed = [];
+
+function toggleModal() {
+  modalContainer.classList.toggle("active");
+  // création des img de la modale
+  async function displayModalImg() {
+    let projectsImg = await getProjects();
+    for (const project of projectsImg) {
+      // si la var n'inclut pas les URL des img de l'api on l'ajoute
+      // évite les duplicats
+      if (!imgDisplayed.includes(project.imageUrl)) {
+        // élements crées
+        const divElementProject = document.createElement("div");
+        const imageElement = document.createElement("img");
+        const trashElement = document.createElement("img");
+        const trashBtn = document.createElement("button");
+        // attributs des images et btn
+        imageElement.src = project.imageUrl;
+        imageElement.crossOrigin = "anonymous";
+        trashElement.src = "./assets/icons/trash-icon.svg";
+        trashBtn.setAttribute("type", "button");
+        trashBtn.setAttribute("data-id", project.id)
+        // classes ajoutées
+        divElementProject.classList.add("divModalImg");
+        imageElement.classList.add("imageElement");
+        trashElement.classList.add("trashImg");
+        trashBtn.classList.add("trashBtn");
+        // lien entre les éléments et le dom
+        galleryEdit.appendChild(divElementProject);
+        divElementProject.appendChild(imageElement);
+        divElementProject.appendChild(trashBtn);
+        divElementProject.appendChild(trashElement);
+        imgDisplayed.push(imageElement.src);
+        console.log(imageElement);
+
+
+        // 5) fonction de suppression d'un projet
+        trashBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          const id = trashBtn.getAttribute("data-id");
+          fetch(`http://localhost:5678/api/works/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-type": "application/json",
+              "Authorization": `Bearer ${Bearer}`
+            }
+          })
+            .then((response) => {
+              if (response.ok) {
+                console.log("Le projet a bien été supprimé");
+              }
+            })
+            .then((result) => {
+              trashBtn.parentNode.remove();
+              console.log(result);
+              projectsGenerator();
+            })
+        })
+      }
+    }
+    // élimination de l'image de positionnement
+    if (document.querySelector(".moveImg")) {
+      document.querySelector(".moveImg").remove()
+    } else {
+      const moveElement = document.createElement("img");
+      moveElement.src = "./assets/icons/Move.svg";
+      moveElement.classList.add("moveImg");
+      galleryEdit.firstElementChild.appendChild(moveElement);
+    }
+  }
+  return displayModalImg();
+}
+
+
+// 6) fonction d'affichage de la deuxième modale
+function displaySecondModal(e) {
+  returnBtn.addEventListener("click", () => { modalContainer.classList.toggle("active") })
+  modalContainer.classList.remove("active");
+  modalContainerAdd.classList.toggle("active");
+  if (inputFile.files[0]) {
+    imageContainer.src = "./assets/icons/pictures-addpictures-project.svg";
+    imageContainer.setAttribute("class", "add-picture-img");
+  }
+}
+
+
+// 7) Affichage de l'image nouvellement chargée dans la seconde modale
+function displaySelectedImage() {
+  const reader = new FileReader();
+  imageContainer.classList.add('newImg');
+  reader.addEventListener('load', function () {
+    imageContainer.src = reader.result;
+    btnValidation.style.backgroundColor = "#1D6154";
+  });
+  if (inputFile.files[0]) {
+    reader.readAsDataURL(inputFile.files[0]);
+  }
+}
+
+inputFile.addEventListener('change', displaySelectedImage);
+
+
+
+
+// 8) fonction d'envoi des nouveaux projets
+
+const formModal = document.querySelector("#formModal");
+
+async function addNewProject(e) {
+  e.preventDefault();
+
+  const formData = new FormData(formModal);
+  console.log(...formData);
+
+  const response = await fetch(`http://localhost:5678/api/works`, {
+    method: "POST",
+    headers: { "Authorization": `Bearer ${Bearer}` },
+    body: formData
+  })
+    .then(response => {
+      const data = response.json();
+      if (response.ok) {
+        console.log(data);
+        projectsGenerator();
+      } else {
+        throw { "name": "ResponseNotOkError", "message": data["message"], "status": response.status };
+      }
+    })
+    .then((success) => {
+      modalContainer.classList.remove("active");
+      modalContainerAdd.classList.remove("active");
+      document.querySelector(".add-picture-img").src = "./assets/icons/pictures-addpictures-project.svg";
+      document.querySelector(".add-picture-img").classList.remove("newImg");
+      formModal.querySelector("#title").innerText = "";
+      formModal.querySelector("#category")[0];
+      formModal.reset();
+      console.log(success);
+    })
+    .catch((err) => {
+      if (err !== null) {
+        Error(err.message, err.status);
+      }
+    });
+};
+
+formModal.addEventListener("submit", addNewProject)
+
+
+
+
+// 9) fonction de nettoyage du sessionStorage
+logOut.addEventListener("click", function (e) {
+  e.preventDefault;
+  sessionStorage.clear();
+  console.log(sessionStorage.key);
+})
