@@ -471,6 +471,8 @@ nav li {
 	cursor: pointer;
 	position: absolute;
 	top: 10px;
+	width: 60px;
+  height: 40px;
 	padding: 8px 10px;
 }
 .return-btn, .return-btn-img {
