@@ -1,7 +1,7 @@
 
 // Element div, regroupant le titre et les éléments du mode édition cliquable;
 const portfolioTitleBlock = document.createElement("div");
-
+const myGallery = document.querySelector(".gallery");
 const Bearer = window.sessionStorage.getItem("Bearer");
 
 // Boutons à comparer aux catégories sur l'API
@@ -25,7 +25,6 @@ async function getProjects() {
 // 2) fonction de génération des projets triés
 async function projectsGenerator() {
 
-  const myGallery = document.querySelector(".gallery");
   myGallery.innerHTML = " ";
   if (document.querySelector(".filters_bloc")) {
     document.querySelector(".filters_bloc").remove();
@@ -193,7 +192,9 @@ function toggleModal() {
             .then((result) => {
               trashBtn.parentNode.remove();
               console.log(result);
-              projectsGenerator();
+              const lastArticle = myGallery.lastChild;
+              console.log(lastArticle);
+              lastArticle.remove();
             })
         })
       }
@@ -214,7 +215,7 @@ function toggleModal() {
 
 // 6) fonction d'affichage de la deuxième modale
 function displaySecondModal(e) {
-  returnBtn.addEventListener("click", () => { modalContainer.classList.toggle("active") })
+  returnBtn.addEventListener("click", () => { modalContainer.classList.toggle("active") });
   modalContainer.classList.remove("active");
   modalContainerAdd.classList.toggle("active");
   if (inputFile.files[0]) {
