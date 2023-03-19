@@ -4,6 +4,7 @@ const portfolioTitleBlock = document.createElement("div");
 const myGallery = document.querySelector(".gallery");
 const Bearer = window.sessionStorage.getItem("Bearer");
 
+
 // Boutons à comparer aux catégories sur l'API
 const CATEGORIES = {
   NONE: "Tous",
@@ -59,7 +60,7 @@ async function projectsGenerator() {
     filtersElement.style.display = "none";
   }
 
-  // Envoi des projets sur le dom afin de vérifier les catégories présentes
+  // création des articles
   displayProjects(projects)
 
 
@@ -72,7 +73,8 @@ async function projectsGenerator() {
       if (category === CATEGORIES.NONE) {
         filteredProjects = projects;
       } else {
-        /* on appelle une méthode filter, et une fonction callback qui va comparer le nom sur l'api et celui de l'objet créee */
+        /* on appelle une méthode filter, et une fonction
+        callback qui va comparer le nom sur l'api et celui de l'objet créee */
         filteredProjects = projects.filter(projet => projet.category.name === category);
       }
       // Dans tous les cas, on rafraichit la galerie en effaçant ce qui était avant
@@ -129,10 +131,10 @@ const trashBtn = document.querySelector("trashBtn");
 const returnBtn = document.querySelector(".return-btn");
 const btnValidation = document.getElementById("btn-validation");
 
+
 // 3) fonction d'ouverture des modales au clic de la souris
 modalTriggers.forEach(trigger => trigger.addEventListener("click", toggleModal));
 modalTriggersAdd.forEach(test => test.addEventListener("click", displaySecondModal));
-
 
 
 // 4) fonction d'affichage de la première modale et des img des projets en miniature
