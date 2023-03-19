@@ -261,7 +261,7 @@ async function addNewProject(e) {
     .then(response => {
       const data = response.json();
       if (response.ok) {
-        console.log(data);
+        console.log(data, "Votre projet a bien été ajouté");
         projectsGenerator();
       } else {
         throw { "name": "ResponseNotOkError", "message": data["message"], "status": response.status };
