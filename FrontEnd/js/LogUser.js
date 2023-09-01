@@ -5,7 +5,7 @@ import { loadedContent } from "./bann.js";
 const form = document.getElementById('form');
 
 form.addEventListener('submit', (e) => {
-  e.preventDefault(); // empêche le formulaire de se soumettre normalement
+  e.preventDefault(); 
   let formData = new FormData(form);
 
   fetch('http://localhost:5678/api/users/login', {
@@ -13,7 +13,7 @@ form.addEventListener('submit', (e) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(Object.fromEntries(formData)) // convertit FormData en objet JSON
+    body: JSON.stringify(Object.fromEntries(formData)) 
   })
     .then((response) => {
       if (!response.ok) {
@@ -23,9 +23,7 @@ form.addEventListener('submit', (e) => {
     })
     .then((data) => {
       console.log(data)
-      // vérification du token, et démarrage de la session
       navigator(data),
-        // affichage de la bannière éditeur
         loadedContent(data);
     })
     .catch((error) => {
